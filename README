@@ -45,21 +45,9 @@ Framework Used : Code-Igniter(PHP)
 SETUP
 
 
-#For mysql setup run following queries on mysql server.
+#For mysql setup run setup.sql on mysql server.
 
-CREATE database movies;
-use movies;
-CREATE TABLE IF NOT EXISTS `movies` (
-  `groupid` varchar(25) DEFAULT NULL,
-  `productid` varchar(25) NOT NULL,
-  `title` varchar(255) NOT NULL,
-  `store` varchar(25) NOT NULL,
-  `category` varchar(50) DEFAULT NULL,
-  `subcategory` varchar(50) CHARACTER SET utf8 DEFAULT NULL,
-  `price` int(11) NOT NULL,
-  `shippingduration` int(11) NOT NULL,
-  PRIMARY KEY (`productid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
 
 
 #For webserver/virtual host set up
@@ -71,11 +59,7 @@ CREATE TABLE IF NOT EXISTS `movies` (
 
 -Change following content of storefront/appliaction/config/database.php
 	$db['default']['hostname'] = '<Enter Mysql Server IP>';
-	$db['default']['username'] = '<Enter Mysql User name with all grants on movies db>';
-	$db['default']['password'] = '<Enter password for User>';
-	$db['default']['database'] = 'movies';
-
-
+	
 
 
 Troubleshoot
