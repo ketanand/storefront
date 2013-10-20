@@ -1,0 +1,90 @@
+Framework Used : Code-Igniter(PHP)
+
+#####################################################################
+#Design Details :
+
+##Controller Class : Welcome
+
+- Default Controller Class.
+- Defines functions for all tasks. (homepage, search , upload , open all versions )
+	homepage = function index() - ##opens base view for the application
+
+	search = searchMovies() - ## called after the search button is pressed.
+				  ## loads all the results returned from model with messages on exceptions.
+
+	upload = insertMovies  - ## called by javascript and passes on file posted to enterprisemodel to be read.
+				
+
+	open all versions = movieVersions ## fetches and displays all versions for the selected movie 
+					  ## single parameter : group id
+
+- Calls enterprisemodel Model Class for all data transactions.
+
+##Model Class : Enterprisesmodel
+
+- Single Model Class for all database related functions (set/get)
+- Defines function(apis) used by controllers for data fetching/manipulation. 
+	insertData($file) - ## opens the file and reads the content if file is not empty
+			    ## fills group_id wherever empty from product_id (string before '-')
+	getMovies($keywords) - ## search all keywords seperated by spaces  
+			       ## returns result with single keyword match too	
+			       ## definite search/ all keyword match on the top
+	getMoviesByGroupId($groupid) - ## returns all results with the given group id
+- Contains function to initialize default dbhandle used by all methods to connect to MySql ( function init()).
+
+##Views 
+	: welcome.php - ## home page to search products , upload products and display search results with links to product pages.
+	: versions.php - ## product page displaying all version of the current product  
+
+
+
+	  
+
+########################################################################
+
+SETUP
+
+
+#For mysql setup run following queries on mysql server.
+
+CREATE database movies;
+use movies;
+CREATE TABLE IF NOT EXISTS `movies` (
+  `groupid` varchar(25) DEFAULT NULL,
+  `productid` varchar(25) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `store` varchar(25) NOT NULL,
+  `category` varchar(50) DEFAULT NULL,
+  `subcategory` varchar(50) CHARACTER SET utf8 DEFAULT NULL,
+  `price` int(11) NOT NULL,
+  `shippingduration` int(11) NOT NULL,
+  PRIMARY KEY (`productid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+
+#For webserver/virtual host set up
+
+- Add a virtual host like 'example.com' in your web server config. 
+- Point root for the virtual host to the root folder `storefront`.
+
+#For App Setup
+
+-Change following content of storefront/appliaction/config/database.php
+	$db['default']['hostname'] = '<Enter Mysql Server IP>';
+	$db['default']['username'] = '<Enter Mysql User name with all grants on movies db>';
+	$db['default']['password'] = '<Enter password for User>';
+	$db['default']['database'] = 'movies';
+
+
+
+
+Troubleshoot
+- Errors were encountered while developing on the webserver.
+	
+	# Error 413 for the size of csv allowed to be uploaded. Increase the relevant variable in your respective webserver config.
+		For nginx follwing line was added to enable uploading test csv
+			client_max_body_size 2M; ####size of csv is 1.5 MB
+
+
+
+
